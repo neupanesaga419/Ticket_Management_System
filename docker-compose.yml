@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    volumes:
+      - .:/tmsproj
+    image: tms_image
+    ports:
+      - 8086:8086
+    container_name: tms_web
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - new_db
+    
+
+    command: python manage.py runserver 0.0.0.0:8086
+  new_db:
+    image: postgres:latest
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    
+    container_name: tms_pg_db
