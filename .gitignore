@@ -6,6 +6,5 @@ Studio/__pycache__/
 Studio/migrations/
 movie/__pycache__/
 movie/migrations/
-movie/serializers.py
-showtime/serializers.py
-Studio/serializers.py
+showtime/__pycache__/
+showtime/migrations/
