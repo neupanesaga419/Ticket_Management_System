@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.models import User
+from tickets.models import Tickets
 
 
 
@@ -12,6 +13,14 @@ class CustomTokenObtainSerializer(TokenObtainPairSerializer):
         token["username"] = user.username
         token["email"] = user.email
         
+        if  Tickets.objects.filter(user=user.id,is_valid=True).exists():
+            Tickets.objects.get(user=user.id,is_valid=True)
+
+            ticket = Tickets.objects.get(user=user.id,is_valid=True)
+            token["hall"] = ticket.shows.studio.name
+            token["seats_reserved"] = ticket.seats
+            token["showtime"] = ticket.shows.show_time.show_type
+            token["movie"] = ticket.shows.movie.name
         return token
     
 

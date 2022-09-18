@@ -10,3 +10,5 @@ showtime/__pycache__/
 showtime/migrations/
 accounts/__pycache__/
 accounts/migrations/
+tickets/__pycache__/
+tickets/migrations/
