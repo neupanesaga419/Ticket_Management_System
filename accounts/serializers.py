@@ -12,15 +12,33 @@ class CustomTokenObtainSerializer(TokenObtainPairSerializer):
         token =  super().get_token(user)
         token["username"] = user.username
         token["email"] = user.email
-        
-        if  Tickets.objects.filter(user=user.id,is_valid=True).exists():
-            Tickets.objects.get(user=user.id,is_valid=True)
 
-            ticket = Tickets.objects.get(user=user.id,is_valid=True)
-            token["hall"] = ticket.shows.studio.name
-            token["seats_reserved"] = ticket.seats
-            token["showtime"] = ticket.shows.show_time.show_type
-            token["movie"] = ticket.shows.movie.name
+        tickets = Tickets.objects.filter(user=user.id)
+
+        ticket_number = 1
+        if tickets:
+
+            for ticket in tickets:
+                tkt = f"ticket_{ticket_number}"
+                token[tkt] = {
+                    "hall": ticket.shows.studio.name,
+                    "seats_reserved" : ticket.seats,
+                    "showtime": ticket.shows.show_time.show_type,
+                    "movie": ticket.shows.movie.name
+                }
+                ticket_number += 1
+        else:
+            token["ticket_details"] = "No tickets Have been been bought."
+
+
+        # if  Tickets.objects.filter(user=user.id,is_valid=True).exists():
+        #     Tickets.objects.get(user=user.id,is_valid=True)
+
+        #     ticket = Tickets.objects.get(user=user.id,is_valid=True)
+        #     token["hall"] = ticket.shows.studio.name
+        #     token["seats_reserved"] = ticket.seats
+        #     token["showtime"] = ticket.shows.show_time.show_type
+        #     token["movie"] = ticket.shows.movie.name
         return token
     
 
