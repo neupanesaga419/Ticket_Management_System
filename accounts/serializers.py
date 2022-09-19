@@ -39,6 +39,7 @@ class CustomTokenObtainSerializer(TokenObtainPairSerializer):
         #     token["seats_reserved"] = ticket.seats
         #     token["showtime"] = ticket.shows.show_time.show_type
         #     token["movie"] = ticket.shows.movie.name
+        # print(token)
         return token
     
 
