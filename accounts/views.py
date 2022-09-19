@@ -18,8 +18,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         access_token = get_data.validated_data['access']
         img = qr.make(access_token)
         qrname = f"{request.data['username']}.png"
-        # print(request.data['username'])
-        # print(qrname)
         img.save(qrname)
         return post_data
 
