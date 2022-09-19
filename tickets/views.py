@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 
 from tickets.models import Tickets
 
@@ -8,10 +8,10 @@ from tickets.serializers import TicketsSerializer
 
 
 class ViewTickets(APIView):
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def get(self,request):
-        data = Tickets.objects.all()
+        data = Tickets.objects.filter(user=request.user.id)
         serializer = TicketsSerializer(data, many=True)
         return Response(serializer.data)
 
