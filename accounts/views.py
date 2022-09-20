@@ -1,3 +1,4 @@
+from django.conf import settings
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -18,7 +19,8 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         access_token = get_data.validated_data['access']
         img = qr.make(access_token)
         qrname = f"{request.data['username']}.png"
-        img.save(qrname)
+        folder = settings.MEDIA_ROOT + "/qr_image/"
+        img.save(folder+qrname)
         return post_data
 
 

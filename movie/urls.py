@@ -1,11 +1,9 @@
-from django.urls import path
-import movie.views as mvi
+from movie.views import MovieAPIView
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'movie', MovieAPIView, basename='movie')
 
 
-urlpatterns = [
-    path('', mvi.GetMovieAV.as_view(), name="movie-list"),
-    path('<pk>', mvi.MovieDetailAV.as_view(), name="movie-detail"),
-    path('create', mvi.CreateMovieAV.as_view(), name="movie-create"),
-    path('update_delete/<pk>', mvi.UpdateAV.as_view(), name="movie-update-delete"),
-]
 
+urlpatterns = router.urls

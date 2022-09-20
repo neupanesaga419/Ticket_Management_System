@@ -1,78 +1,42 @@
 
-from rest_framework import generics
-from rest_framework.permissions import IsAdminUser
+from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 from showtime.models import ShowTime, Shows
 from showtime.serializers import ShowTimeSerializer, ShowsSerializer
 
 
-class ShowTimeListAV(generics.ListCreateAPIView):
+class ShowTimeAPIView(viewsets.ModelViewSet):
 
-    permission_classes = [IsAdminUser]
     serializer_class = ShowTimeSerializer
-    queryset = ShowTime.objects.all()
+    queryset = ShowTime.objects.filter()
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+    def get_permissions(self):
 
+        list_activities = ["create","partial_update", "destroy", "update"]
+        
+        if self.action in list_activities:
+            permission_classes = [IsAdminUser]
+        
+        else:
+            permission_classes = [IsAuthenticated]
 
-class ShowTimeDetailAV(generics.RetrieveUpdateDestroyAPIView):
-
-    permission_classes = [IsAdminUser]
-    serializer_class = ShowTimeSerializer
-    queryset = ShowTime.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-    
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-    def patch(self, request, *args, **kwargs):
-        return self.partial_update(request, *args, **kwargs)
-    
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+        return [permission() for permission in permission_classes] 
 
 
-class ShowsListAV(generics.ListAPIView):
 
+class ShowsAPIView(viewsets.ModelViewSet):
     serializer_class = ShowsSerializer
-    queryset = Shows.objects.all()
+    queryset = Shows.objects.filter()
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    def get_permissions(self):
 
+        list_activities = ["create","partial_update", "destroy", "update"]
+        
+        if self.action in list_activities:
+            permission_classes = [IsAdminUser]
+        
+        else:
+            permission_classes = [IsAuthenticated]
 
-class ShowsCreateAV(generics.CreateAPIView):
-
-    permission_classes = [IsAdminUser]
-    serializer_class = ShowsSerializer
-    queryset = Shows.objects.all()
-
-      
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
-
-class ShowsDetailsAV(generics.RetrieveUpdateDestroyAPIView):
-
-    permission_classes = [IsAdminUser]
-    serializer_class = ShowsSerializer
-    queryset = Shows.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-    
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-    def patch(self, request, *args, **kwargs):
-        return self.partial_update(request, *args, **kwargs)
-    
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
-
+        return [permission() for permission in permission_classes] 

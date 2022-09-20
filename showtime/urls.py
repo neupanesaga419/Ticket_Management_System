@@ -1,10 +1,13 @@
-from django.urls import path
-import showtime.views as svi
+# from email.mime import base
+# from django.urls import path
+# import showtime.views as showtimeview
 
-urlpatterns = [
-    path('showtime/', svi.ShowTimeListAV.as_view(), name="showtime-list"),
-    path('showtime/<pk>/', svi.ShowTimeDetailAV.as_view(), name="showtime-detail"),
-    path('shows/', svi.ShowsListAV.as_view(), name="shows-list"),
-    path('shows/create/', svi.ShowsCreateAV.as_view(), name='show-create'),
-    path('shows_detail/<pk>/', svi.ShowsDetailsAV.as_view(), name='shows-detail'),
-]
+from showtime.views import ShowTimeAPIView, ShowsAPIView
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'showtime', ShowTimeAPIView, basename='showtime')
+router.register(r'', ShowsAPIView, basename="shows")
+
+
+urlpatterns = router.urls

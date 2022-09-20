@@ -1,45 +1,23 @@
-from rest_framework import generics
-from rest_framework.permissions import IsAdminUser
+from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+
 from movie.models import Movie
 from movie.serializers import MovieSerializer
 
 
-class GetMovieAV(generics.ListAPIView):
+class MovieAPIView(viewsets.ModelViewSet):
 
     serializer_class = MovieSerializer
-    queryset = Movie.objects.all()
-    
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args , *kwargs)
+    queryset = Movie.objects.filter(is_availiable=True)
 
+    def get_permissions(self):
 
-class CreateMovieAV(generics.CreateAPIView):
-    serializer_class = MovieSerializer
-    queryset = Movie.objects.all()
-    permission_classes = [IsAdminUser]
+        list_activities = ["create","partial_update", "destroy", "update"]
+        
+        if self.action in list_activities:
+            permission_classes = [IsAdminUser]
+        
+        else:
+            permission_classes = [IsAuthenticated]
 
-    def post(self,request,*args,**kwargs):
-        return self.create(request, *args, **kwargs)
-
-
-class MovieDetailAV(generics.RetrieveAPIView):
-    serializer_class = MovieSerializer
-    queryset = Movie.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args , *kwargs)
-
-
-class UpdateAV(generics.UpdateAPIView):
-    serializer_class = MovieSerializer
-    queryset = Movie.objects.all()
-    permission_classes = [IsAdminUser]
-
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args , *kwargs)
-    
-    def patch(self, request, *args, **kwargs):
-        return self.partial_update(request, *args , *kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.delete(request, *args, **kwargs)
+        return [permission() for permission in permission_classes] 

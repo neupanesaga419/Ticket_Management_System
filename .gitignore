@@ -7,3 +7,6 @@ movie/__pycache__/
 showtime/__pycache__/
 accounts/__pycache__/
 tickets/__pycache__/
+media/
+.png
+paras.png
