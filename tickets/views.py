@@ -9,6 +9,7 @@ from tickets.models import Tickets
 from tickets.serializers import TicketsSerializer
 from accounts.permissions import IsOnlyTicketUser
 
+
 class ViewTickets(APIView):
     permission_classes = [IsAuthenticated]
 
