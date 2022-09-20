@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     'showtime',
     'accounts',
     'tickets',
+    'userprofiles',
+    'bookings',
 
     #Third Party APP
     "rest_framework",

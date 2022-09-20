@@ -3,35 +3,34 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
-from tickets.models import Tickets
-
-from tickets.serializers import TicketsSerializer
 from accounts.permissions import IsOnlyTicketUser
 
+from bookings.models import Bookings
+from bookings.serializers import BookingsSerializer
 
-class ViewTickets(APIView):
+class ViewBookings(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self,request):
         if not request.user.is_superuser:
-            data = Tickets.objects.filter(user=request.user.id)
+            data = Bookings.objects.filter(user=request.user.id)
         else:
-            data = Tickets.objects.all()
-        serializer = TicketsSerializer(data, many=True)
+            data = Bookings.objects.all()
+        serializer = BookingsSerializer(data, many=True)
         return Response(serializer.data)
 
     def post(self,request):
         data = request.data
         user = request.user.id
         data['user'] = user
-        serializer = TicketsSerializer(data=data)
+        serializer = BookingsSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"msg":"Tickets Successfully Created","ticket data":serializer.data})
+        return Response({"msg":"Booking Successfully Created","Bookings data":serializer.data})
 
 
-class TicketDetails(generics.RetrieveUpdateDestroyAPIView):
+class BookingsDetails(generics.RetrieveUpdateDestroyAPIView):
 
-    serializer_class =  TicketsSerializer
-    queryset = Tickets.objects.all()
+    serializer_class =  BookingsSerializer
+    queryset = Bookings.objects.all()
     permission_classes = [IsOnlyTicketUser]
