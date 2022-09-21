@@ -31,13 +31,13 @@ class ShowTime(models.Model):
 
     def __str__(self):
         show_start_time = self.show_start_time.astimezone(to_local)
-        msg = f"{self.show_type} - {show_start_time.strftime('%I:%M %p')}"
+        msg = f"{self.show_type} - {show_start_time.strftime('%b %d, %I:%M %p')}"
         return msg
 
 
 
 class Shows(models.Model):
-    show_time = models.ForeignKey(ShowTime, on_delete=models.DO_NOTHING, related_name="show_time")
+    show_time = models.ForeignKey(ShowTime, on_delete=models.DO_NOTHING, related_name="shows")
     studio = models.ForeignKey(Studio, on_delete=models.DO_NOTHING, related_name="studio")
     movie = models.ForeignKey(Movie, on_delete=models.DO_NOTHING, related_name="movie")
     date_created = models.DateField(auto_now_add=True)

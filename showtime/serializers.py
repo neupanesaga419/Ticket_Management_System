@@ -3,7 +3,7 @@ from showtime.models import ShowTime, Shows
 
 
 class ShowTimeSerializer(serializers.ModelSerializer):
-
+    shows = serializers.StringRelatedField(many=True, read_only=True)
     class Meta:
         model = ShowTime
         fields = "__all__"
