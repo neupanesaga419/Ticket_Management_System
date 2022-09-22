@@ -56,3 +56,9 @@ class ShowsAPIView(viewsets.ModelViewSet):
             permission_classes = [IsAuthenticated]
 
         return [permission() for permission in permission_classes] 
+
+    # def get_queryset(self):
+
+    #     qs = super().get_queryset()
+    #     qs.filter(show_time__show_start_time__day=22)
+    #     return qs
